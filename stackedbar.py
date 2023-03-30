@@ -6,12 +6,23 @@ import pybaseball as pbb
 from datetime import date
 from matplotlib import gridspec
 from matplotlib import gridspec
+import statsapi as mlbstats
+
 
 pbb.cache.enable()
 
+mets = mlbstats.lookup_team('nyn')[0]['id']
 
-df_sch = pd.read_csv('mets_2023.csv')
-df_sch.pop('Unnamed: 0') #artifact from saving csv in other code
+sched = mlbstats.schedule(start_date = '01/01/2023', end_date='12/31/2023', team=str(mets))
+
+df_sch = pd.DataFrame(sched)
+
+df_sch = pd.DataFrame(df_sch.loc[df_sch['status'] != 'Postponed'])  #remove postponed games
+df_sch = pd.DataFrame(df_sch.loc[df_sch['game_type'] == 'R'])       #remove spring training
+
+
+# df_sch = pd.read_csv('mets_2023.csv')
+# df_sch.pop('Unnamed: 0') #artifact from saving csv in other code
 
 
 other_team = [] # list of other teams played
