@@ -10,10 +10,10 @@ import statsapi as mlbstats
 
 
 pbb.cache.enable()
+# print(mlbstats.lookup_team('nyn')[0])
+team = mlbstats.lookup_team('nyn')[0]
 
-mets = mlbstats.lookup_team('nyn')[0]['id']
-
-sched = mlbstats.schedule(start_date = '01/01/2023', end_date='12/31/2023', team=str(mets))
+sched = mlbstats.schedule(start_date = '01/01/2023', end_date='12/31/2023', team=str(team['id']))
 
 df_sch = pd.DataFrame(sched)
 
@@ -21,15 +21,12 @@ df_sch = pd.DataFrame(df_sch.loc[df_sch['status'] != 'Postponed'])  #remove post
 df_sch = pd.DataFrame(df_sch.loc[df_sch['game_type'] == 'R'])       #remove spring training
 
 
-# df_sch = pd.read_csv('mets_2023.csv')
-# df_sch.pop('Unnamed: 0') #artifact from saving csv in other code
-
 
 other_team = [] # list of other teams played
 
 for index, row in df_sch.iterrows():
 
-    if row['home_id'] == 121:
+    if row['home_id'] == team['id']:
         other_team.append(row['away_name'])
     else:
         other_team.append(row['home_name'])
@@ -50,11 +47,11 @@ df_teams['total'] = np.zeros(len(team_set))
 df_teams['inc_home'] = np.zeros(len(team_set))
 df_teams['inc_away'] = np.zeros(len(team_set))
 
-
+# print(df_sch['status'])
 
 ### Not optimal method, should optimize to list comprehension in future version
 for index, row in df_sch.iterrows():
-    if row['status'] == 'Scheduled':
+    if row['status'] != 'Final':
         df_teams.loc[df_teams['team']==row['other_team'], ['incomplete']] += 1
         if row['other_team'] == row['away_name']:
             df_teams.loc[df_teams['team']==row['other_team'], ['inc_home']] += 1
@@ -63,7 +60,7 @@ for index, row in df_sch.iterrows():
 
 
 
-    elif row['winning_team'] == 'New York Mets':
+    elif row['winning_team'] == team['name']:
         df_teams.loc[df_teams['team']==row['other_team'], ['won']] += 1
 
     else:
@@ -210,7 +207,7 @@ fig.legend(handles, labels, loc='lower center', ncol=4, bbox_to_anchor=(0.5, -0.
 
 
 
-fig.suptitle(f"Mets Current Season Series Progress\n{date.today()} ({won}-{lost}, {incomplete} GR)"
+fig.suptitle(f"{team['teamName']} Current Season Series Progress\n{date.today()} ({won}-{lost}, {incomplete} GR)"
              , size=24, weight='bold', fontname='serif', y=0.9, va='bottom')
 fig.tight_layout()
 plt.savefig("test.jpg")
