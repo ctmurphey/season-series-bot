@@ -1,2 +1,2 @@
 # season-series-bot
-A Reddit bot for automatically posting the season series status of a team
+A bot for Reddit that automatically posts the season series status of a team over a certain time frame (like at the end of each game day). The non-bot version of this code (and prototype upgrades) can be found in the `mets-season-series` folder in [my baseball repo](https://github.com/ctmurphey/baseball). 
