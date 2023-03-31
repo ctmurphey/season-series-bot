@@ -1,4 +1,3 @@
-# import statsapi as mlbstats
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,7 +9,6 @@ import statsapi as mlbstats
 
 
 pbb.cache.enable()
-# print(mlbstats.lookup_team('nyn')[0])
 team = mlbstats.lookup_team('nyn')[0]
 
 sched = mlbstats.schedule(start_date = '01/01/2023', end_date='12/31/2023', team=str(team['id']))
@@ -47,11 +45,9 @@ df_teams['total'] = np.zeros(len(team_set))
 df_teams['inc_home'] = np.zeros(len(team_set))
 df_teams['inc_away'] = np.zeros(len(team_set))
 
-# print(df_sch['status'])
-
 ### Not optimal method, should optimize to list comprehension in future version
 for index, row in df_sch.iterrows():
-    if row['status'] != 'Final':
+    if row['status'] != 'Final' and row['status'] != 'Game Over':
         df_teams.loc[df_teams['team']==row['other_team'], ['incomplete']] += 1
         if row['other_team'] == row['away_name']:
             df_teams.loc[df_teams['team']==row['other_team'], ['inc_home']] += 1
