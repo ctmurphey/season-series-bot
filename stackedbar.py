@@ -1,14 +1,12 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import pybaseball as pbb
 from datetime import date
 from matplotlib import gridspec
 from matplotlib import gridspec
 import statsapi as mlbstats
 
 
-pbb.cache.enable()
 team = mlbstats.lookup_team('nyn')[0]
 
 sched = mlbstats.schedule(start_date = '01/01/2023', end_date='12/31/2023', team=str(team['id']))
@@ -65,14 +63,25 @@ for index, row in df_sch.iterrows():
     df_teams.loc[df_teams['team']==row['other_team'], ['total']] += 1  
 
 # get divisions for teams:
-divs = ['ALE', 'ALC', 'ALW', 'NLE', 'NLC', 'NLW'] #order that pbb prints standings
+divs = ['ALE', 'ALC', 'ALW', 'NLE', 'NLC', 'NLW'] #order that API prints standings
 
-### Preseason messes up pybaseball.standings:
+### In case API doesn't have data yet:
 try:
-    standings = pd.concat(pbb.standings(), ignore_index=True)
+    divisions = pd.DataFrame(list(mlbstats.standings_data().values()))
+    standings = pd.DataFrame(
+    {'Tm': [name['name'] for row in divisions['teams'] for name in row],
+        'W': [name['w'] for row in divisions['teams'] for name in row],
+        'L': [name['l'] for row in divisions['teams'] for name in row]}
+    )
     team_rec = [f"{standings.loc[standings['Tm']==team, ['W']].values[0][0]}-{standings.loc[standings['Tm']==team, ['L']].values[0][0]}" for team in df_teams['team']]
+    
 except:
-    standings = pd.concat(pbb.standings(2022), ignore_index=True)
+    divisions = pd.DataFrame(list(mlbstats.standings_data(season=2022).values()))
+    standings = pd.DataFrame(
+    {'Tm': [name['name'] for row in divisions['teams'] for name in row],
+        'W': [name['w'] for row in divisions['teams'] for name in row],
+        'L': [name['l'] for row in divisions['teams'] for name in row]}
+    )    
     team_rec = ["0-0" for team in df_teams['team']]
 standings['div'] = [divs[i] for i in range(6) for j in range(5)]
 teams_div = [standings.loc[standings['Tm']==team, ['div']].values[0][0] for team in df_teams['team']]
