@@ -172,7 +172,7 @@ for i in range(2):
                     size=18, fontname='serif')
             
         if losses.datavalues[j] != 0:
-            ax.text(wins.datavalues[j] + losses.datavalues[i]/2, x[i][j], int(losses.datavalues[j]), 
+            ax.text(wins.datavalues[j] + losses.datavalues[j]/2, x[i][j], int(losses.datavalues[j]), 
                     weight='bold', va='center', ha='center',
                     size=18, fontname='serif')
             
