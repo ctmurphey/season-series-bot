@@ -216,4 +216,3 @@ fig.suptitle(f"{team['teamName']} Current Season Series Progress\n{date.today()}
              , size=24, weight='bold', fontname='serif', y=0.9, va='bottom')
 fig.tight_layout()
 plt.savefig("test.jpg")
-# plt.show()
