@@ -1,5 +1,8 @@
 import praw
 from datetime import date
+from stackedbar import make_graph
+
+make_graph() #generate a new plot, saved as test.jpg
 
 f = open("credentials.txt")
 client_id = f.readline().split()[1]
@@ -15,8 +18,8 @@ reddit = praw.Reddit(
     password=pwd
 )
 today = date.today()
-subreddit = reddit.subreddit("NewYorkMets") #uncomment when deploying
-# subreddit = reddit.subreddit("PythonSandlot") # for testing/debugging
+# subreddit = reddit.subreddit("NewYorkMets") #uncomment when deploying
+subreddit = reddit.subreddit("PythonSandlot") # for testing/debugging
 
 print(subreddit.display_name)
 print(reddit.user.me())
