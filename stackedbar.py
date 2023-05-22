@@ -16,7 +16,7 @@ def make_graph():
     df_sch = pd.DataFrame(df_sch.loc[df_sch['status'] != 'Postponed'])  #remove postponed games
     df_sch = pd.DataFrame(df_sch.loc[df_sch['game_type'] == 'R'])       #remove spring training
 
-
+    # df_sch.to_csv('sched.csv')
 
     other_team = [] # list of other teams played
 
@@ -45,7 +45,12 @@ def make_graph():
 
     ### Not optimal method, should optimize to list comprehension in future version
     for index, row in df_sch.iterrows():
-        if row['status'] != 'Final' and row['status'] != 'Game Over':
+
+        if row['game_id'] in df_sch.loc[:index-1, ['game_id']].values: #if game is a duplicate (already happened)
+            continue # skip one of them
+
+        if row['status'] not in ['Final', 'Completed Early: Rain'] \
+        and row['status'] != 'Game Over' : #if game isn't over
             df_teams.loc[df_teams['team']==row['other_team'], ['incomplete']] += 1
             if row['other_team'] == row['away_name']:
                 df_teams.loc[df_teams['team']==row['other_team'], ['inc_home']] += 1
@@ -216,3 +221,7 @@ def make_graph():
                 , size=24, weight='bold', fontname='serif', y=0.9, va='bottom')
     fig.tight_layout()
     plt.savefig("test.jpg")
+
+
+if __name__ == "__main__":
+    make_graph()
