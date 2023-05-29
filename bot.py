@@ -1,6 +1,7 @@
 import praw
 from datetime import date
 from stackedbar import make_graph
+from time import sleep
 
 make_graph() #generate a new plot, saved as test.jpg
 
@@ -25,9 +26,9 @@ print(subreddit.display_name)
 print(reddit.user.me())
 title = "Mets Current Season Series Progress: "+str(today)
 my_post = subreddit.submit_image(title=title, image_path='test.jpg')
-
+print("Image posted")
 # comment_str = "If you see any issues, please message u/just-an-astronomer"
-comment_str = '''🤖^beep ^boop ^I'm ^a ^bot Hello, I'm u/season-series-bot. I'll 
+comment_str = '''beep ^boop beep ^I'm ^a ^bot Hello, I'm u/season-series-bot. I'll 
 be taking over the season series graphics from now on. The account change from 
 human to bot is so that I can be further automated while keeping the personal 
 account more safe/separate. Any prototype upgrades will be tested in r/PythonSandlot 
@@ -36,4 +37,7 @@ before being deployed here.
 If you do notice any issues, please contact u/just-an-astronomer.
 
 [My Github Repo](https://github.com/ctmurphey/season-series-bot)'''
+
+sleep(3) #giving some time before commenting
 my_post.reply(comment_str)
+print("Comment posted")
