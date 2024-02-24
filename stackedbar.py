@@ -9,7 +9,7 @@ import statsapi as mlbstats
 def make_graph():
     team = mlbstats.lookup_team('nyn')[0]
 
-    sched = mlbstats.schedule(start_date = '01/01/2023', end_date='12/31/2023', team=str(team['id']))
+    sched = mlbstats.schedule(start_date = '01/01/2024', end_date='12/31/2024', team=str(team['id']))
 
     df_sch = pd.DataFrame(sched)
 
@@ -203,8 +203,8 @@ def make_graph():
 
         ax.set_ylim(-w/2, max(x[i])+w/2)
         ax.invert_yaxis()
-        ax.set_xticks(range(0, 21, 5), fontfamily='serif', minor=False)
-        ax.set_xticks(range(0, 21, 1), fontfamily='serif', minor=True)
+        ax.set_xticks(range(0, 21, 5), labels=range(0, 21, 5), fontfamily='serif', minor=False)
+        ax.set_xticks(range(0, 21, 1), labels=range(0, 21, 1), fontfamily='serif', minor=True)
         ax.tick_params('x', labelsize='large')
         ax.set_yticks(ticks = x[i], labels=df_teams['team'][14*i : 14+i*15], size=18, fontfamily='serif')
         ax.set_xlim(0, [13, 4][i])
