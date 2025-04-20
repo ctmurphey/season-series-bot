@@ -6,10 +6,12 @@ from matplotlib import gridspec
 from matplotlib import gridspec
 import statsapi as mlbstats
 
+plt.style.use('fivethirtyeight')
+
 def make_graph():
     team = mlbstats.lookup_team('nyn')[0]
 
-    sched = mlbstats.schedule(start_date = '01/01/2023', end_date='12/31/2023', team=str(team['id']))
+    sched = mlbstats.schedule(start_date = '01/01/2025', end_date='12/31/2025', team=str(team['id']))
 
     df_sch = pd.DataFrame(sched)
 
@@ -116,8 +118,8 @@ def make_graph():
 
 
     ### Trying new way due to 50% more teams:
-    fig = plt.figure(tight_layout=True, figsize=(12.75, 7))
-    gs = gridspec.GridSpec(2, 2, height_ratios=[1,12], width_ratios=[13,3])
+    fig = plt.figure(figsize=(16.75, 10))
+    gs = gridspec.GridSpec(2, 2, height_ratios=[1,15], width_ratios=[13,6])
 
     w = 0.9 #main bar width
     x = [np.arange(14), np.arange(15)]
@@ -130,29 +132,29 @@ def make_graph():
         wins   = ax.barh(0, won, w, label='won',
                             color="cornflowerblue", edgecolor='k')
         ax.text(won/2, 0, round(won) ,weight='bold', va='center', ha='center',
-                        size=18, fontname='serif')
+                        size=18)
     if lost != 0:
         losses = ax.barh(0, lost, w, left=won,
                             label='lost', color="darkorange", edgecolor='k')
         ax.text(won+lost/2, 0, round(lost), weight='bold', va='center', ha='center',
-                        size=18, fontname='serif')
+                        size=18)
     if inc_home != 0:
         home   = ax.barh(0, inc_home, w, left=won+lost,
                             label="incomplete home", color='silver', edgecolor='k')
         ax.text(won+lost+inc_home/2, 0, round(inc_home),
                         weight='bold', va='center', ha='center',
-                        size=18, fontname='serif')
+                        size=18)
 
     if inc_away != 0:
         away   = ax.barh(0, inc_away, w, left=won+lost+inc_home,
                             label="incomplete away", color='k', edgecolor='k')
         ax.text(won+lost+inc_home+inc_away/2, 0, round(inc_away),
                         weight='bold', va='center', ha='center', color='w',
-                        size=18, fontname='serif')
+                        size=18)
 
     ax.axis('off')
     ax.set_title('Total Season:', size=20, weight='bold',
-                fontname='serif')
+    )
 
     ax.set_xlim(0, 162)
 
@@ -183,42 +185,43 @@ def make_graph():
             if wins.datavalues[j] != 0: #Ignore values that are currently 0
                 ax.text(wins.datavalues[j]/2, x[i][j], int(wins.datavalues[j]), 
                         weight='bold', va='center', ha='center',
-                        size=18, fontname='serif')
+                        size=18)
                 
             if losses.datavalues[j] != 0:
                 ax.text(wins.datavalues[j] + losses.datavalues[j]/2, x[i][j], int(losses.datavalues[j]), 
                         weight='bold', va='center', ha='center',
-                        size=18, fontname='serif')
+                        size=18)
                 
             if home.datavalues[j] != 0:
                 ax.text(wins.datavalues[j] + losses.datavalues[j] + home.datavalues[j]/2, x[i][j], int(home.datavalues[j]), 
                         weight='bold', va='center', ha='center',
-                        size=18, fontname='serif')
+                        size=18)
                 
             if away.datavalues[j] != 0:
                 ax.text(wins.datavalues[j] + losses.datavalues[j] + home.datavalues[j]\
                         + away.datavalues[j]/2, x[i][j], int(away.datavalues[j]), 
                         weight='bold', va='center', ha='center',
-                        size=18, fontname='serif', color='w')
+                        size=18, color='w')
 
         ax.set_ylim(-w/2, max(x[i])+w/2)
         ax.invert_yaxis()
-        ax.set_xticks(range(0, 21, 5), fontfamily='serif', minor=False)
-        ax.set_xticks(range(0, 21, 1), fontfamily='serif', minor=True)
+        ax.set_xticks([])
+        ax.spines['bottom'].set_visible(False)
+        ax.spines['right'].set_visible(False)
         ax.tick_params('x', labelsize='large')
-        ax.set_yticks(ticks = x[i], labels=df_teams['team'][14*i : 14+i*15], size=18, fontfamily='serif')
-        ax.set_xlim(0, [13, 4][i])
-        ax.set_title(leagues[i], loc=locs[i], weight='bold', va='center', ha='center', size=18, fontname='serif')
+        ax.set_yticks(ticks = x[i], labels=df_teams['team'][14*i : 14+i*15], size=18)
+        ax.set_xlim(0, [13, 6][i])
+        ax.set_title(leagues[i], loc=locs[i], weight='bold', va='center', ha='center', size=18)
 
 
     handles, labels = ax.get_legend_handles_labels()
-    fig.legend(handles, labels, loc='lower center', ncol=4, bbox_to_anchor=(0.5, -0.025),
-            prop={'family': "serif", 'size':'x-large', 'weight': 'bold'}, framealpha=0)
+    fig.legend(handles, labels, loc='upper left', ncol=2, bbox_to_anchor=(0., .95),
+            prop={'size':'large', 'weight': 'bold'}, framealpha=0)
 
 
 
     fig.suptitle(f"{team['teamName']} Current Season Series Progress\n{date.today()} ({won}-{lost}, {incomplete} GR)"
-                , size=24, weight='bold', fontname='serif', y=0.9, va='bottom')
+                , size=24, weight='bold', y=0.9, va='bottom')
     fig.tight_layout()
     plt.savefig("test.jpg")
 
