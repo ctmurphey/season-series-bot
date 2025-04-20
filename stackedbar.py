@@ -83,7 +83,7 @@ def make_graph():
         team_rec = [f"{standings.loc[standings['Tm']==team, ['W']].values[0][0]}-{standings.loc[standings['Tm']==team, ['L']].values[0][0]}" for team in df_teams['team']]
         
     except:
-        divisions = pd.DataFrame(list(mlbstats.standings_data(season=2022).values()))
+        divisions = pd.DataFrame(list(mlbstats.standings_data(season=2024).values()))
         standings = pd.DataFrame(
         {'Tm': [name['name'] for row in divisions['teams'] for name in row],
             'W': [name['w'] for row in divisions['teams'] for name in row],
