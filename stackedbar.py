@@ -222,6 +222,7 @@ def make_graph():
 
     fig.suptitle(f"{team['teamName']} Current Season Series Progress\n{date.today()} ({won}-{lost}, {incomplete} GR)"
                 , size=24, weight='bold', y=0.9, va='bottom')
+    fig.text(0.8, 0.87, "u/season-series-bot,\nby u/just-an-astronomer", weight='bold')
     fig.tight_layout()
     plt.savefig("test.jpg")
 
