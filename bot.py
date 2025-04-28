@@ -29,9 +29,9 @@ title = "Mets Current Season Series Progress: "+str(today)
 my_post = subreddit.submit_image(title=title, image_path='test.jpg', flair_id=flair)
 print("Image posted")
 # comment_str = "If you see any issues, please message u/just-an-astronomer"
-comment_str = '''beep ^boop beep ^I'm ^a ^bot Hello, I'm u/season-series-bot. I
-was off for a while but I'm back now. I post our current record, broken down by
-opponent after each series.
+comment_str = '''beep ^boop beep ^I'm ^a ^bot Hello, I'm u/season-series-bot. I post 
+our current record, broken down by opponent after each series to track our progress 
+throughout the season. 
 
 If you do notice any issues, please contact u/just-an-astronomer. If you have any 
 suggestions for improvement or other things to plot/post with this graph, feel 
