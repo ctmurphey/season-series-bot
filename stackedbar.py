@@ -18,12 +18,10 @@ def make_graph():
     df_sch = pd.DataFrame(df_sch.loc[df_sch['status'] != 'Postponed'])  #remove postponed games
     df_sch = pd.DataFrame(df_sch.loc[df_sch['game_type'] == 'R'])       #remove spring training
 
-    # df_sch.to_csv('sched.csv')
 
     other_team = [] # list of other teams played
 
-    for index, row in df_sch.iterrows():
-
+    for index, row in df_sch.iterrows(): # generate list of opponents
         if row['home_id'] == team['id']:
             other_team.append(row['away_name'])
         else:
@@ -128,28 +126,33 @@ def make_graph():
     ### Total season progress bar:
     ax = fig.add_subplot(gs[0, :])
 
+    wincolor = 'cornflowerblue'
+    losscolor = 'darkorange'
+    inchomecolor = 'lightgray'
+    incawaycolor = 'silver'
+
     if won != 0:
         wins   = ax.barh(0, won, w, label='won',
-                            color="cornflowerblue", edgecolor='k')
+                            color=wincolor, edgecolor='k')
         ax.text(won/2, 0, round(won) ,weight='bold', va='center', ha='center',
                         size=18)
     if lost != 0:
         losses = ax.barh(0, lost, w, left=won,
-                            label='lost', color="darkorange", edgecolor='k')
+                            label='lost', color=losscolor, edgecolor='k')
         ax.text(won+lost/2, 0, round(lost), weight='bold', va='center', ha='center',
                         size=18)
     if inc_home != 0:
         home   = ax.barh(0, inc_home, w, left=won+lost,
-                            label="incomplete home", color='silver', edgecolor='k')
+                            label="incomplete home", color=inchomecolor, edgecolor='k')
         ax.text(won+lost+inc_home/2, 0, round(inc_home),
                         weight='bold', va='center', ha='center',
                         size=18)
 
     if inc_away != 0:
         away   = ax.barh(0, inc_away, w, left=won+lost+inc_home,
-                            label="incomplete away", color='k', edgecolor='k')
+                            label="incomplete away", color=incawaycolor, edgecolor='k')
         ax.text(won+lost+inc_home+inc_away/2, 0, round(inc_away),
-                        weight='bold', va='center', ha='center', color='w',
+                        weight='bold', va='center', ha='center', color='k',
                         size=18)
 
     ax.axis('off')
@@ -167,18 +170,18 @@ def make_graph():
     for i in range(2):
         ax = fig.add_subplot(gs[1, i])
         wins       = ax.barh(x[i], df_teams['won'][14*i : 14+i*15], w, label='won',
-                            color="cornflowerblue", edgecolor='k')
+                            color=wincolor, edgecolor='k')
         
         losses     = ax.barh(x[i], df_teams['lost'][14*i : 14+i*15], w, left=df_teams['won'][14*i : 14+i*15],
-                            label='lost', color="darkorange", edgecolor='k')
+                            label='lost', color=losscolor, edgecolor='k')
 
         home       = ax.barh(x[i], df_teams['inc_home'][14*i : 14+i*15], w,
                             left=df_teams['won'][14*i : 14+i*15]+df_teams['lost'][14*i : 14+i*15],
-                            label="incomplete home", color='silver', edgecolor='k')
+                            label=inchomecolor, color=inchomecolor, edgecolor='k')
         
         away       = ax.barh(x[i], df_teams['inc_away'][14*i : 14+i*15], w, 
                             left=df_teams['won'][14*i : 14+i*15]+df_teams['lost'][14*i : 14+i*15] + df_teams['inc_home'][14*i : 14+i*15],
-                            label="incomplete away", color='k', edgecolor='k')
+                            label=incawaycolor, color=incawaycolor, edgecolor='k')
         
 
         for j in x[i]: 
@@ -201,7 +204,7 @@ def make_graph():
                 ax.text(wins.datavalues[j] + losses.datavalues[j] + home.datavalues[j]\
                         + away.datavalues[j]/2, x[i][j], int(away.datavalues[j]), 
                         weight='bold', va='center', ha='center',
-                        size=18, color='w')
+                        size=18, color='k')
 
         ax.set_ylim(-w/2, max(x[i])+w/2)
         ax.invert_yaxis()
