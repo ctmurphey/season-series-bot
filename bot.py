@@ -26,7 +26,7 @@ subreddit = reddit.subreddit("NewYorkMets") #uncomment when deploying
 print(subreddit.display_name)
 print(reddit.user.me())
 title = "Mets Current Season Series Progress: "+str(today)
-my_post = subreddit.submit_image(title=title, image_path='test.jpg', flair_id=flair)
+my_post = subreddit.submit_image(title=title, image_path='test.jpg')#, flair_id=flair)
 print("Image posted")
 # comment_str = "If you see any issues, please message u/just-an-astronomer"
 comment_str = '''beep ^boop beep ^I'm ^a ^bot Hello, I'm u/season-series-bot. I post 
