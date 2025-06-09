@@ -128,8 +128,8 @@ def make_graph():
 
     wincolor = 'cornflowerblue'
     losscolor = 'darkorange'
-    inchomecolor = 'lightgray'
-    incawaycolor = 'silver'
+    inchomecolor = 'silver'
+    incawaycolor = 'gray'
 
     if won != 0:
         wins   = ax.barh(0, won, w, label='won',
@@ -177,11 +177,11 @@ def make_graph():
 
         home       = ax.barh(x[i], df_teams['inc_home'][14*i : 14+i*15], w,
                             left=df_teams['won'][14*i : 14+i*15]+df_teams['lost'][14*i : 14+i*15],
-                            label=inchomecolor, color=inchomecolor, edgecolor='k')
+                            label='incomplete home', color=inchomecolor, edgecolor='k')
         
         away       = ax.barh(x[i], df_teams['inc_away'][14*i : 14+i*15], w, 
                             left=df_teams['won'][14*i : 14+i*15]+df_teams['lost'][14*i : 14+i*15] + df_teams['inc_home'][14*i : 14+i*15],
-                            label=incawaycolor, color=incawaycolor, edgecolor='k')
+                            label='incomplete away', color=incawaycolor, edgecolor='k')
         
 
         for j in x[i]: 
