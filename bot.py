@@ -2,8 +2,10 @@ import praw
 from datetime import date
 from stackedbar import make_graph
 from time import sleep
+from stackedbar_new import fetch_and_plot
 
-make_graph() #generate a new plot, saved as test.jpg
+# make_graph() #generate a new plot, saved as test.jpg
+fetch_and_plot()
 
 f = open("credentials.txt")
 client_id = f.readline().split()[1]
@@ -26,7 +28,7 @@ subreddit = reddit.subreddit("NewYorkMets") #uncomment when deploying
 print(subreddit.display_name)
 print(reddit.user.me())
 title = "Mets Current Season Series Progress: "+str(today)
-my_post = subreddit.submit_image(title=title, image_path='test.jpg')#, flair_id=flair)
+my_post = subreddit.submit_image(title=title, image_path='test2.jpg')#, flair_id=flair)
 print("Image posted")
 # comment_str = "If you see any issues, please message u/just-an-astronomer"
 comment_str = '''beep ^boop beep ^I'm ^a ^bot Hello, I'm u/season-series-bot. I post 
