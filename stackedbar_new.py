@@ -202,17 +202,24 @@ def make_plots(df, team, savefig=True, savefile='test.jpg'):
         ax_bot[i].spines['right'].set_visible(False)
         ax_bot[i].set_xticks([])
 
+    handles, labels = ax_top.get_legend_handles_labels()
+    fig.legend(handles, labels, loc='upper left', ncol=2, bbox_to_anchor=(-0.01, .97),
+            prop={'size':'x-large', 'weight': 'bold'}, framealpha=0)
+    
     ### Creating the suptitle:
     fig.suptitle(f"{team} Current Season Series Progress\n{date.today()} ({total_wins}-{total_loss}, {inc_home+inc_away} GR)"
                  , size=32
                  , weight='bold',)# va='bottom')
-
+    fig.text(0.78, 0.89, "u/season-series-bot,\nby u/just-an-astronomer", size='x-large', weight='bold')
 
     if savefig:
         plt.savefig(savefile)
     else:
         plt.show()       
-
+def fetch_and_plot():
+    schedule, team = fetch_games()
+    df = reduce_data(schedule, team)
+    make_plots(df[0], df[1], savefile='test2.jpg')
 
 if __name__ == "__main__":
     schedule, team = fetch_games()
